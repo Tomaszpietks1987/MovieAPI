@@ -9,8 +9,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MovieAPI.Entities;
 using Microsoft.EntityFrameworkCore;
-
-
+using MovieAPI.Infrastructure.Interfaces;
+using MovieAPI.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,10 +33,15 @@ namespace MovieAPI
 
             services.AddControllers();
 
+
+            services.AddAutoMapper(this.GetType().Assembly);
+
             services.AddDbContext<MovieContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
+
+            services.AddTransient<IMovieService, MovieService>();
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo
             {
