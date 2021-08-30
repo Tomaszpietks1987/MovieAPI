@@ -111,6 +111,11 @@ namespace MovieAPI.Controllers
             try
             {
                 var movie = await _movieService.AddMovie(dto);
+                if (movie == null)
+                {
+                    _logger.LogWarning("The movie don't exist.");
+                    return NotFound();
+                }
                 _logger.LogInformation("The movie is created.");
 
                 return Created($"/api/GetMovie/{movie.Id}", movie);
